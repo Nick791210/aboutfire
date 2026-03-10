@@ -3,19 +3,44 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>火哥當前人格與生命系統全貌</title>
+  <meta name="color-scheme" content="dark light" />
+  <title>火哥當前人格與生命系統全貌 v3.1</title>
+  <meta name="description" content="《火哥當前人格與生命系統全貌 v3.1》個人品牌網站版，含固定導覽、可折疊章節、深淺色切換與完整 RWD 體驗。" />
   <style>
     :root {
-      --bg: #0b1020;
-      --panel: rgba(255,255,255,0.06);
-      --panel-border: rgba(255,255,255,0.12);
-      --text: #eef2ff;
-      --muted: #b8c0d9;
-      --accent: #8b5cf6;
-      --accent-2: #22c55e;
-      --shadow: 0 10px 30px rgba(0,0,0,0.25);
-      --max: 1200px;
-      --radius: 20px;
+      --bg: #08111f;
+      --bg-soft: #0d1728;
+      --surface: rgba(255,255,255,0.08);
+      --surface-strong: rgba(255,255,255,0.12);
+      --surface-solid: #111d31;
+      --text: #edf3ff;
+      --muted: #b3c0d8;
+      --line: rgba(255,255,255,0.12);
+      --accent: #7c3aed;
+      --accent-2: #14b8a6;
+      --accent-3: #60a5fa;
+      --shadow: 0 20px 60px rgba(0, 0, 0, 0.28);
+      --radius-xl: 28px;
+      --radius-lg: 20px;
+      --radius-md: 16px;
+      --content-w: 1180px;
+      --nav-h: 74px;
+      --reading: 0%;
+    }
+
+    body.light {
+      --bg: #f4f7fb;
+      --bg-soft: #eaf0f8;
+      --surface: rgba(255,255,255,0.9);
+      --surface-strong: rgba(255,255,255,1);
+      --surface-solid: #ffffff;
+      --text: #132033;
+      --muted: #4d5c74;
+      --line: rgba(17, 29, 49, 0.12);
+      --accent: #6d28d9;
+      --accent-2: #0f766e;
+      --accent-3: #2563eb;
+      --shadow: 0 18px 50px rgba(25, 40, 65, 0.12);
     }
 
     * { box-sizing: border-box; }
@@ -24,636 +49,1264 @@
 
     body {
       margin: 0;
-      font-family: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", sans-serif;
-      color: var(--text);
+      font-family: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", system-ui, sans-serif;
       background:
-        radial-gradient(circle at top left, rgba(139,92,246,0.25), transparent 28%),
-        radial-gradient(circle at top right, rgba(34,197,94,0.14), transparent 22%),
-        linear-gradient(180deg, #0b1020 0%, #11182b 100%);
-      line-height: 1.8;
+        radial-gradient(circle at 10% 10%, rgba(124,58,237,0.18), transparent 30%),
+        radial-gradient(circle at 90% 10%, rgba(20,184,166,0.14), transparent 24%),
+        linear-gradient(180deg, var(--bg) 0%, var(--bg-soft) 100%);
+      color: var(--text);
+      line-height: 1.9;
+      letter-spacing: 0.01em;
+      min-height: 100vh;
+      transition: background-color 0.35s ease, color 0.35s ease;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0 0 auto 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--accent), var(--accent-2), var(--accent-3));
+      width: var(--reading);
+      z-index: 200;
+      transition: width 0.08s linear;
     }
 
     a { color: inherit; text-decoration: none; }
+    button { font: inherit; }
 
     .wrap {
-      width: min(calc(100% - 32px), var(--max));
+      width: min(calc(100% - 32px), var(--content-w));
       margin: 0 auto;
     }
 
-    .hero {
-      padding: 64px 0 32px;
+    .topbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 120;
+      backdrop-filter: blur(16px);
+      background: color-mix(in srgb, var(--bg) 68%, transparent);
+      border-bottom: 1px solid var(--line);
     }
 
-    .hero-card {
-      background: var(--panel);
-      border: 1px solid var(--panel-border);
-      backdrop-filter: blur(10px);
-      border-radius: 28px;
-      box-shadow: var(--shadow);
-      padding: 36px;
-      overflow: hidden;
+    .topbar-inner {
+      min-height: var(--nav-h);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      min-width: 0;
+    }
+
+    .brand-mark {
+      width: 40px;
+      height: 40px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.25), 0 10px 24px rgba(124,58,237,0.22);
       position: relative;
+      overflow: hidden;
+      flex: 0 0 auto;
     }
 
-    .hero-card::after {
+    .brand-mark::after {
+      content: "H";
+      position: absolute;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      font-weight: 800;
+      color: white;
+      letter-spacing: 0.02em;
+    }
+
+    .brand-copy {
+      min-width: 0;
+    }
+
+    .brand-title {
+      margin: 0;
+      font-size: 1rem;
+      font-weight: 800;
+      line-height: 1.2;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .brand-sub {
+      margin: 2px 0 0;
+      font-size: 0.8rem;
+      color: var(--muted);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .nav-links a,
+    .nav-links button,
+    .ghost-btn {
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.04);
+      color: var(--text);
+      padding: 10px 14px;
+      border-radius: 999px;
+      cursor: pointer;
+      transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+    }
+
+    .nav-links a:hover,
+    .nav-links button:hover,
+    .ghost-btn:hover {
+      transform: translateY(-1px);
+      background: rgba(255,255,255,0.08);
+      border-color: color-mix(in srgb, var(--accent) 35%, var(--line));
+    }
+
+    .mobile-nav-toggle {
+      display: none;
+    }
+
+    .hero {
+      position: relative;
+      padding: calc(var(--nav-h) + 48px) 0 42px;
+      overflow: hidden;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 28px;
+      align-items: stretch;
+    }
+
+    .hero-copy,
+    .hero-visual {
+      position: relative;
+      border: 1px solid var(--line);
+      background: linear-gradient(180deg, color-mix(in srgb, var(--surface-strong) 92%, transparent), color-mix(in srgb, var(--surface) 88%, transparent));
+      border-radius: 32px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .hero-copy {
+      padding: 42px;
+    }
+
+    .hero-copy::before,
+    .hero-visual::before {
       content: "";
       position: absolute;
-      inset: auto -60px -60px auto;
-      width: 220px;
-      height: 220px;
-      background: radial-gradient(circle, rgba(139,92,246,0.35), transparent 65%);
+      inset: 0;
+      background:
+        radial-gradient(circle at 20% 15%, rgba(124,58,237,0.18), transparent 24%),
+        radial-gradient(circle at 80% 0%, rgba(20,184,166,0.15), transparent 24%);
       pointer-events: none;
     }
 
     .eyebrow {
-      display: inline-block;
-      padding: 6px 12px;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 14px;
       border-radius: 999px;
-      background: rgba(139,92,246,0.16);
-      border: 1px solid rgba(139,92,246,0.32);
+      background: rgba(124,58,237,0.14);
       color: #ddd6fe;
+      border: 1px solid rgba(124,58,237,0.24);
       font-size: 0.9rem;
-      margin-bottom: 14px;
+      margin-bottom: 18px;
+    }
+
+    body.light .eyebrow {
+      color: var(--accent);
+      background: rgba(109,40,217,0.08);
+      border-color: rgba(109,40,217,0.15);
     }
 
     h1 {
       margin: 0 0 16px;
-      font-size: clamp(2rem, 4vw, 3.5rem);
-      line-height: 1.2;
-      letter-spacing: -0.02em;
+      font-size: clamp(2.3rem, 4vw, 4.3rem);
+      line-height: 1.08;
+      letter-spacing: -0.035em;
+      max-width: 12ch;
     }
 
     .lead {
       margin: 0;
+      font-size: clamp(1rem, 1.35vw, 1.12rem);
       color: var(--muted);
-      font-size: clamp(1rem, 1.8vw, 1.15rem);
-      max-width: 900px;
+      max-width: 62ch;
     }
 
-    .summary-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 16px;
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
       margin-top: 28px;
     }
 
-    .mini-card {
+    .primary-btn,
+    .secondary-btn {
+      padding: 13px 18px;
+      border-radius: 999px;
+      border: none;
+      cursor: pointer;
+      font-weight: 700;
+      letter-spacing: 0.01em;
+      transition: transform 0.2s ease, opacity 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .primary-btn {
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      color: #fff;
+      box-shadow: 0 14px 32px rgba(124,58,237,0.22);
+    }
+
+    .secondary-btn {
+      background: rgba(255,255,255,0.06);
+      color: var(--text);
+      border: 1px solid var(--line);
+    }
+
+    .primary-btn:hover,
+    .secondary-btn:hover {
+      transform: translateY(-1px);
+      opacity: 0.96;
+    }
+
+    .hero-meta {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      margin-top: 28px;
+    }
+
+    .meta-card {
       padding: 18px;
+      border-radius: 20px;
       background: rgba(255,255,255,0.05);
-      border: 1px solid rgba(255,255,255,0.1);
-      border-radius: 18px;
+      border: 1px solid var(--line);
     }
 
-    .mini-card h3 {
-      margin: 0 0 8px;
-      font-size: 0.95rem;
-      color: #ddd6fe;
+    .meta-card h3 {
+      margin: 0 0 6px;
+      font-size: 0.9rem;
+      color: color-mix(in srgb, var(--accent-3) 65%, var(--text));
     }
 
-    .mini-card p {
+    .meta-card p {
       margin: 0;
-      color: var(--muted);
       font-size: 0.95rem;
+      color: var(--muted);
       line-height: 1.7;
     }
 
-    .toc {
-      padding: 8px 0 28px;
+    .hero-visual {
+      min-height: 560px;
+      padding: 28px;
+      display: grid;
+      place-items: stretch;
     }
 
-    .toc-card {
+    .visual-panel {
+      position: relative;
+      border-radius: 26px;
+      overflow: hidden;
+      min-height: 100%;
+      border: 1px solid color-mix(in srgb, var(--accent-3) 18%, var(--line));
+      background:
+        linear-gradient(145deg, rgba(96,165,250,0.22), rgba(124,58,237,0.14) 35%, rgba(20,184,166,0.18) 100%),
+        linear-gradient(180deg, rgba(8,17,31,0.9), rgba(8,17,31,0.4));
+    }
+
+    body.light .visual-panel {
+      background:
+        linear-gradient(145deg, rgba(96,165,250,0.18), rgba(109,40,217,0.1) 35%, rgba(15,118,110,0.14) 100%),
+        linear-gradient(180deg, rgba(255,255,255,0.95), rgba(255,255,255,0.7));
+    }
+
+    .visual-overlay {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at 18% 24%, rgba(255,255,255,0.15), transparent 22%),
+        radial-gradient(circle at 82% 18%, rgba(255,255,255,0.08), transparent 20%),
+        radial-gradient(circle at 62% 72%, rgba(124,58,237,0.35), transparent 28%),
+        linear-gradient(140deg, rgba(255,255,255,0.04), transparent 34%);
+      pointer-events: none;
+    }
+
+    .visual-grid {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.06) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.06) 1px, transparent 1px);
+      background-size: 42px 42px;
+      mask-image: linear-gradient(180deg, rgba(0,0,0,1), rgba(0,0,0,0.15));
+      opacity: 0.45;
+    }
+
+    .visual-content {
+      position: relative;
+      z-index: 1;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 26px;
+    }
+
+    .visual-badge {
+      align-self: flex-start;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.12);
+      color: rgba(255,255,255,0.9);
+      font-size: 0.88rem;
+      backdrop-filter: blur(8px);
+    }
+
+    .visual-quote {
+      margin: auto 0 0;
+      max-width: 18ch;
+      font-size: clamp(1.8rem, 3vw, 3.15rem);
+      line-height: 1.1;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      text-wrap: balance;
+      color: #fff;
+      text-shadow: 0 8px 30px rgba(0,0,0,0.26);
+    }
+
+    body.light .visual-quote { color: #10223a; text-shadow: none; }
+
+    .visual-foot {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      color: rgba(255,255,255,0.82);
+      font-size: 0.92rem;
+    }
+
+    body.light .visual-foot { color: #31425d; }
+
+    .toolbar {
+      position: sticky;
+      top: calc(var(--nav-h) + 10px);
+      z-index: 100;
+      margin: 0 auto 22px;
+    }
+
+    .toolbar-card {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 14px;
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      background: color-mix(in srgb, var(--surface-strong) 86%, transparent);
+      backdrop-filter: blur(12px);
+      box-shadow: var(--shadow);
+    }
+
+    .toolbar-title {
+      font-size: 0.95rem;
+      color: var(--muted);
+    }
+
+    .toolbar-actions {
       display: flex;
       flex-wrap: wrap;
       gap: 10px;
-      background: rgba(255,255,255,0.04);
-      border: 1px solid rgba(255,255,255,0.08);
-      border-radius: 18px;
-      padding: 16px;
     }
 
-    .toc a {
-      padding: 10px 14px;
-      border-radius: 999px;
-      background: rgba(255,255,255,0.06);
-      color: var(--muted);
-      font-size: 0.95rem;
-      transition: 0.2s ease;
+    .main-grid {
+      display: grid;
+      grid-template-columns: 290px minmax(0, 1fr);
+      gap: 24px;
+      align-items: start;
+      padding-bottom: 80px;
     }
 
-    .toc a:hover {
-      background: rgba(139,92,246,0.18);
-      color: var(--text);
-    }
-
-    main {
-      padding-bottom: 56px;
-    }
-
-    .section {
-      margin: 22px 0;
-      background: var(--panel);
-      border: 1px solid var(--panel-border);
-      border-radius: var(--radius);
+    .sidecard {
+      position: sticky;
+      top: calc(var(--nav-h) + 94px);
+      border: 1px solid var(--line);
+      background: linear-gradient(180deg, color-mix(in srgb, var(--surface-strong) 92%, transparent), color-mix(in srgb, var(--surface) 88%, transparent));
+      border-radius: 24px;
       box-shadow: var(--shadow);
       overflow: hidden;
     }
 
-    .section-head {
-      padding: 24px 24px 8px;
-    }
-
-    .section-index {
-      font-size: 0.9rem;
-      color: #c4b5fd;
-      margin-bottom: 8px;
-    }
-
-    .section h2 {
-      margin: 0;
-      font-size: clamp(1.4rem, 2.5vw, 2rem);
-      line-height: 1.3;
-    }
-
-    .section-body {
-      padding: 8px 24px 24px;
-      display: grid;
-      gap: 18px;
-    }
-
-    .block {
-      background: rgba(255,255,255,0.04);
-      border: 1px solid rgba(255,255,255,0.08);
-      border-radius: 18px;
+    .sidecard-inner {
       padding: 20px;
     }
 
-    .block h3 {
-      margin: 0 0 10px;
-      font-size: 1.05rem;
-      color: #e9ddff;
+    .sidecard h2 {
+      margin: 0 0 14px;
+      font-size: 1rem;
+      letter-spacing: 0.01em;
     }
 
-    .block p {
+    .toc {
+      display: grid;
+      gap: 8px;
+    }
+
+    .toc a {
+      padding: 11px 12px;
+      border-radius: 14px;
+      color: var(--muted);
+      border: 1px solid transparent;
+      transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+      font-size: 0.94rem;
+      line-height: 1.5;
+    }
+
+    .toc a:hover,
+    .toc a.active {
+      background: rgba(255,255,255,0.06);
+      color: var(--text);
+      border-color: color-mix(in srgb, var(--accent) 35%, var(--line));
+    }
+
+    .side-note {
+      margin-top: 18px;
+      padding-top: 16px;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 0.9rem;
+      line-height: 1.7;
+    }
+
+    .content {
+      display: grid;
+      gap: 18px;
+    }
+
+    .section-card {
+      border: 1px solid var(--line);
+      background: linear-gradient(180deg, color-mix(in srgb, var(--surface-strong) 92%, transparent), color-mix(in srgb, var(--surface) 88%, transparent));
+      border-radius: 24px;
+      box-shadow: var(--shadow);
+      overflow: clip;
+      scroll-margin-top: calc(var(--nav-h) + 82px);
+    }
+
+    .section-toggle {
+      width: 100%;
+      text-align: left;
+      border: none;
+      background: transparent;
+      color: inherit;
+      cursor: pointer;
+      padding: 24px 24px 20px;
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      gap: 16px;
+      align-items: start;
+    }
+
+    .section-no {
+      width: 44px;
+      height: 44px;
+      border-radius: 16px;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(135deg, rgba(124,58,237,0.18), rgba(20,184,166,0.18));
+      border: 1px solid color-mix(in srgb, var(--accent) 28%, var(--line));
+      font-weight: 800;
+      flex: 0 0 auto;
+    }
+
+    .section-headline h2 {
+      margin: 0;
+      font-size: clamp(1.2rem, 2.2vw, 1.8rem);
+      line-height: 1.3;
+      letter-spacing: -0.02em;
+    }
+
+    .section-headline p {
+      margin: 10px 0 0;
+      color: var(--muted);
+      font-size: 0.98rem;
+      line-height: 1.7;
+      max-width: 62ch;
+    }
+
+    .section-icon {
+      width: 42px;
+      height: 42px;
+      border-radius: 16px;
+      display: grid;
+      place-items: center;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.05);
+      transition: transform 0.25s ease;
+      font-size: 1.2rem;
+    }
+
+    .section-card[open] .section-icon {
+      transform: rotate(180deg);
+    }
+
+    .section-body {
+      padding: 0 24px 26px;
+      border-top: 1px solid var(--line);
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), transparent);
+    }
+
+    .section-content {
+      padding-top: 22px;
+    }
+
+    .section-content > *:first-child { margin-top: 0; }
+    .section-content > *:last-child { margin-bottom: 0; }
+
+    .section-content h3 {
+      margin: 28px 0 10px;
+      font-size: 1.08rem;
+      line-height: 1.5;
+      color: color-mix(in srgb, var(--accent-3) 55%, var(--text));
+    }
+
+    .section-content p {
+      margin: 0 0 18px;
+      color: var(--text);
+    }
+
+    .section-content strong {
+      color: var(--text);
+    }
+
+    .callout {
+      margin: 22px 0;
+      padding: 18px 18px 18px 20px;
+      border-left: 4px solid var(--accent);
+      border-radius: 0 18px 18px 0;
+      background: linear-gradient(90deg, rgba(124,58,237,0.14), rgba(124,58,237,0.04));
+      color: var(--text);
+    }
+
+    .footer {
+      padding: 8px 0 90px;
+    }
+
+    .footer-card {
+      border: 1px solid var(--line);
+      background: linear-gradient(180deg, color-mix(in srgb, var(--surface-strong) 92%, transparent), color-mix(in srgb, var(--surface) 88%, transparent));
+      border-radius: 28px;
+      box-shadow: var(--shadow);
+      padding: 30px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+    }
+
+    .footer-card p {
       margin: 0;
       color: var(--muted);
     }
 
-    .block ul {
-      margin: 12px 0 0;
-      padding-left: 20px;
-      color: var(--muted);
-    }
-
-    .block li + li { margin-top: 6px; }
-
-    .quote {
-      border-left: 4px solid var(--accent);
-      padding-left: 16px;
-      color: #ddd6fe;
-      font-size: 1.02rem;
-    }
-
-    .two-col {
+    .floating-tools {
+      position: fixed;
+      right: 20px;
+      bottom: 20px;
+      z-index: 130;
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 18px;
+      gap: 12px;
     }
 
-    .footer {
-      padding: 24px 0 56px;
-      color: #95a0c2;
-      text-align: center;
-      font-size: 0.95rem;
+    .fab {
+      width: 52px;
+      height: 52px;
+      border-radius: 18px;
+      border: 1px solid var(--line);
+      background: color-mix(in srgb, var(--surface-strong) 92%, transparent);
+      color: var(--text);
+      box-shadow: var(--shadow);
+      display: grid;
+      place-items: center;
+      cursor: pointer;
+      backdrop-filter: blur(12px);
+      transition: transform 0.2s ease, opacity 0.2s ease;
     }
 
-    @media (max-width: 960px) {
-      .summary-grid,
-      .two-col {
-        grid-template-columns: 1fr 1fr;
-      }
+    .fab:hover { transform: translateY(-1px); }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
     }
 
-    @media (max-width: 680px) {
-      .hero { padding-top: 28px; }
-      .hero-card { padding: 22px; border-radius: 22px; }
-      .section-head { padding: 20px 18px 6px; }
-      .section-body { padding: 8px 18px 18px; }
-      .summary-grid,
-      .two-col {
+    .reveal.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @media (max-width: 1120px) {
+      .hero-grid,
+      .main-grid {
         grid-template-columns: 1fr;
       }
-      .mini-card,
-      .block {
-        padding: 16px;
+
+      .sidecard {
+        position: static;
+        order: 2;
       }
-      .toc-card {
+
+      .content {
+        order: 1;
+      }
+
+      .hero-visual {
+        min-height: 360px;
+      }
+    }
+
+    @media (max-width: 900px) {
+      .topbar-inner {
+        align-items: flex-start;
+        padding: 12px 0;
+      }
+
+      .mobile-nav-toggle {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 44px;
+        height: 44px;
+        border-radius: 14px;
+        border: 1px solid var(--line);
+        background: rgba(255,255,255,0.05);
+        color: var(--text);
+        cursor: pointer;
+        flex: 0 0 auto;
+      }
+
+      .nav-links {
+        position: absolute;
+        top: calc(100% + 10px);
+        left: 16px;
+        right: 16px;
+        display: none;
+        flex-direction: column;
+        align-items: stretch;
+        background: color-mix(in srgb, var(--surface-strong) 96%, transparent);
+        backdrop-filter: blur(16px);
+        border: 1px solid var(--line);
+        border-radius: 20px;
         padding: 12px;
+        box-shadow: var(--shadow);
       }
-      .toc a {
+
+      .topbar.open .nav-links {
+        display: flex;
+      }
+
+      .nav-links a,
+      .nav-links button {
         width: 100%;
-        text-align: center;
+        text-align: left;
+      }
+
+      .hero-copy { padding: 26px; }
+      .hero-meta { grid-template-columns: 1fr; }
+      .toolbar { top: calc(var(--nav-h) + 6px); }
+      .section-toggle,
+      .section-body { padding-left: 18px; padding-right: 18px; }
+      .footer-card { padding: 22px; }
+    }
+
+    @media (max-width: 640px) {
+      :root { --nav-h: 68px; }
+      .wrap { width: min(calc(100% - 20px), var(--content-w)); }
+      .hero { padding-top: calc(var(--nav-h) + 28px); }
+      .hero-copy,
+      .hero-visual,
+      .section-card,
+      .sidecard,
+      .footer-card,
+      .toolbar-card { border-radius: 22px; }
+      .hero-copy { padding: 22px; }
+      .hero-visual { padding: 16px; min-height: 320px; }
+      .visual-content { padding: 18px; }
+      .visual-quote { max-width: 13ch; }
+      .section-toggle {
+        grid-template-columns: 1fr auto;
+        gap: 12px;
+      }
+      .section-no { display: none; }
+      .section-headline p { font-size: 0.94rem; }
+      .floating-tools { right: 12px; bottom: 12px; }
+      .fab { width: 46px; height: 46px; border-radius: 16px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after {
+        animation: none !important;
+        transition: none !important;
       }
     }
   </style>
 </head>
 <body>
-  <header class="hero">
-    <div class="wrap">
-      <div class="hero-card">
-        <div class="eyebrow">火哥人格系統側寫・整合版</div>
-        <h1>火哥當前人格與生命系統全貌</h1>
-        <p class="lead">
-          這是一份根據你前面提供的背景、思想、職業、財務、關係模式與近期分手狀態所整理出的整體側寫。
-          核心判斷是：你是一個高智識、高自洽、高誠實、高承擔、高感受、高暴露的人，
-          不是躲在理論後面的人，而是會親自下場、親自受傷、親自崩潰，再把經驗抽象成思想體系的人。
-        </p>
-
-        <div class="summary-grid">
-          <article class="mini-card">
-            <h3>人格主軸</h3>
-            <p>高感受、高分析、高公開暴露、高自我重建，同時具備思想家、操盤手與深度投入型伴侶的特質。</p>
-          </article>
-          <article class="mini-card">
-            <h3>核心困境</h3>
-            <p>不是缺能力，而是高完成度後的停滯與熱寂；不是求生問題，而是存在活性問題。</p>
-          </article>
-          <article class="mini-card">
-            <h3>感情真相</h3>
-            <p>你不是不會痛，而是即使知道不是誰的錯、不是自己不好，也依然會因失去而劇烈崩潰。</p>
-          </article>
-          <article class="mini-card">
-            <h3>系統特色</h3>
-            <p>把經濟學活成作業系統，用效用、成本、邊際、資訊邊界去解讀世界與自己。</p>
-          </article>
+  <header class="topbar" id="topbar">
+    <div class="wrap topbar-inner">
+      <a href="#top" class="brand" aria-label="回到頂部">
+        <div class="brand-mark" aria-hidden="true"></div>
+        <div class="brand-copy">
+          <p class="brand-title">火哥當前人格與生命系統全貌 v3.1</p>
+          <p class="brand-sub">個人品牌網站版・完整長文敘事</p>
         </div>
-      </div>
+      </a>
+
+      <button class="mobile-nav-toggle" id="mobileNavToggle" aria-label="開啟導覽列" aria-expanded="false">☰</button>
+
+      <nav class="nav-links" aria-label="主要導覽">
+        <a href="#hero">首頁</a>
+        <a href="#section-1">生命底盤</a>
+        <a href="#section-7">專業人格</a>
+        <a href="#section-8">情感人格</a>
+        <a href="#section-14">最終總像</a>
+        <button type="button" id="expandAllTop">全部展開</button>
+        <button type="button" id="collapseAllTop">全部收合</button>
+        <button type="button" id="themeToggleTop">切換深淺色</button>
+      </nav>
     </div>
   </header>
 
-  <section class="toc">
-    <div class="wrap">
-      <nav class="toc-card">
-        <a href="#s1">人格底盤</a>
-        <a href="#s2">認知與思想核心</a>
-        <a href="#s3">職業與能力系統</a>
-        <a href="#s4">創作人格</a>
-        <a href="#s5">情感人格</a>
-        <a href="#s6">承諾與關係結構</a>
-        <a href="#s7">財務人格</a>
-        <a href="#s8">道德與自我觀</a>
-        <a href="#s9">當前生命主題</a>
-        <a href="#s10">優勢與限制</a>
-        <a href="#s11">最終總像</a>
-      </nav>
+  <main id="top">
+    <section class="hero" id="hero">
+      <div class="wrap hero-grid reveal">
+        <section class="hero-copy" aria-labelledby="heroTitle">
+          <div class="eyebrow">HUOGE · SYSTEM PROFILE · V3.1</div>
+          <h1 id="heroTitle">火哥當前人格與生命系統全貌 v3.1</h1>
+          <p class="lead">這是一份以第三人視角書寫的完整人格與生命系統描寫，將火哥的世界觀、專業方法、閱讀脈絡、情感結構、風險模型與當前生命困局，整合為可閱讀、可部署、可長期更新的個人品牌網站版本。</p>
+
+          <div class="hero-actions">
+            <a class="primary-btn" href="#section-1">開始閱讀</a>
+            <button class="secondary-btn" type="button" id="expandAllHero">展開全部章節</button>
+            <button class="secondary-btn" type="button" id="collapseAllHero">收合全部章節</button>
+          </div>
+
+          <div class="hero-meta">
+            <article class="meta-card">
+              <h3>核心氣質</h3>
+              <p>高自覺、高整合、高誠實、高承擔，同時具備深度思考、真實感受與系統建構能力。</p>
+            </article>
+            <article class="meta-card">
+              <h3>生命主題</h3>
+              <p>已脫離求生型人生，正處於高完成度後的存在型提問：什麼還值得再次全心投入。</p>
+            </article>
+            <article class="meta-card">
+              <h3>網站特性</h3>
+              <p>固定導覽、可折疊章節、全展開/全收合、深淺色切換、閱讀進度、RWD、品牌視覺與長文閱讀優化。</p>
+            </article>
+          </div>
+        </section>
+
+        <aside class="hero-visual" aria-label="封面視覺區">
+          <div class="visual-panel">
+            <div class="visual-grid"></div>
+            <div class="visual-overlay"></div>
+            <div class="visual-content">
+              <div class="visual-badge">PERSONAL BRAND WEB EXPERIENCE</div>
+              <div class="visual-quote">在已經看懂很多幻覺之後，還有什麼值得再次全心投入。</div>
+              <div class="visual-foot">
+                <span>Thinking · Feeling · Building</span>
+                <span>v3.1</span>
+              </div>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <div class="wrap toolbar reveal">
+      <div class="toolbar-card">
+        <div class="toolbar-title">長文閱讀模式已啟用，可自由展開或收合章節，並切換深淺色主題。</div>
+        <div class="toolbar-actions">
+          <button class="ghost-btn" type="button" id="expandAll">全部展開</button>
+          <button class="ghost-btn" type="button" id="collapseAll">全部收合</button>
+          <button class="ghost-btn" type="button" id="toggleTheme">切換深淺色</button>
+        </div>
+      </div>
     </div>
-  </section>
 
-  <main>
-    <div class="wrap">
-      <section class="section" id="s1">
-        <div class="section-head">
-          <div class="section-index">一</div>
-          <h2>人格底盤：你不是匱乏型，而是完成型</h2>
+    <div class="wrap main-grid">
+      <aside class="sidecard reveal" aria-label="章節導覽">
+        <div class="sidecard-inner">
+          <h2>章節導覽</h2>
+          <nav class="toc" id="toc">
+            <a href="#section-1">一、生命底盤</a>
+            <a href="#section-2">二、時間觀與世界觀</a>
+            <a href="#section-3">三、認知作業系統</a>
+            <a href="#section-4">四、知識與閱讀人格</a>
+            <a href="#section-5">五、創作人格</a>
+            <a href="#section-6">六、教學與轉譯能力</a>
+            <a href="#section-7">七、專業人格</a>
+            <a href="#section-8">八、情感人格</a>
+            <a href="#section-9">九、關係觀</a>
+            <a href="#section-10">十、情緒機制</a>
+            <a href="#section-11">十一、道德與溝通氣質</a>
+            <a href="#section-12">十二、財務人格</a>
+            <a href="#section-13">十三、核心優勢</a>
+            <a href="#section-14">十四、當前真正的困局</a>
+            <a href="#section-15">最終總像</a>
+          </nav>
+          <div class="side-note">本頁採單檔設計，可直接作為 GitHub / Vercel 部署版本使用；所有章節均支援單獨折疊與整體控制。</div>
         </div>
-        <div class="section-body">
-          <div class="block">
-            <h3>生存底盤穩定</h3>
-            <p>
-              你的經濟、安全、工作、生存結構都相對穩定。你不是靠求生焦慮驅動的人，
-              也不是為了基本安全感而不停妥協的人。你的問題不在底層不穩，反而在於底層太穩，
-              所以你必須開始面對更高階的存在問題：人生接下來要靠什麼重新點燃。
-            </p>
-          </div>
-          <div class="block">
-            <h3>內生價值系統很強</h3>
-            <p>
-              你不太需要外部世界來決定你是誰。你不靠市場數據、點閱率、社會期待、主流道德或主流關係形式來定義自己的價值。
-              這讓你有很高的自由度，但也讓外部世界越來越難提供足夠強的驅動。
-            </p>
-          </div>
-        </div>
-      </section>
+      </aside>
 
-      <section class="section" id="s2">
-        <div class="section-head">
-          <div class="section-index">二</div>
-          <h2>認知與思想核心：你把世界轉譯成可分析系統</h2>
-        </div>
-        <div class="section-body">
-          <div class="block">
-            <h3>經濟學不是學科，是你的世界語言</h3>
-            <p>
-              你已經把經濟學內化成存在論與認識論。對你來說，人是追求效用的，成本是失去的效用，
-              選擇是機會成本排序，關係是動態交換，善惡是集體偏好與制度定價，愛則可以被定義成把對方的效用當成自己的效用。
-              你不是知道一套理論的人，而是把理論活成作業系統的人。
-            </p>
-          </div>
-          <div class="two-col">
-            <div class="block">
-              <h3>高邏輯自洽</h3>
-              <ul>
-                <li>不喜歡雙標與偷換概念</li>
-                <li>不喜歡模糊敘事與廉價安慰</li>
-                <li>傾向從結構而不是道德標籤看事情</li>
-                <li>追求觀念上的乾淨與一致性</li>
-              </ul>
+      <section class="content">
+        <details class="section-card reveal" id="section-1" open>
+          <summary class="section-toggle">
+            <div class="section-no">一</div>
+            <div class="section-headline">
+              <h2>生命底盤：已經脫離求生問題，進入存在問題</h2>
+              <p>火哥的生命底盤是穩的，真正困局不是生存壓力，而是高完成度之後的存在提問。</p>
             </div>
-            <div class="block">
-              <h3>強力去魅能力</h3>
-              <ul>
-                <li>會拆平台神話與行銷包裝</li>
-                <li>會拆愛情中的公平與付出回報神話</li>
-                <li>會拆善惡與理性的絕對論</li>
-                <li>很難讓自己長期住在幻覺裡</li>
-              </ul>
+            <div class="section-icon" aria-hidden="true">⌄</div>
+          </summary>
+          <div class="section-body">
+            <div class="section-content">
+              <p>火哥的生命底盤是穩的。 他的核心困局不是生存壓力，也不是社會競逐焦慮，而是更高階的存在問題：當基本安全感、工作能力、思辨能力與自我定義能力都已經成形之後，生命還要靠什麼繼續產生活性。這使他的人生主題很早就不是「如何證明自己」，而是「如何更準確地認識自己，以及如何在不可控世界裡不自欺地活」。</p>
+              <p>火哥對人生意義的立場非常穩定。他長期認為人生沒有客觀意義，許多被社會視為理所當然的人生意義，其實只是人類發明的故事；真正重要的，是理解自己的成本與效用、辨識自己的主觀函數，並對不可控之事賦予屬於自己的意義。這種立場不是一時情緒，而是貫穿他閱讀、創作、工作與關係判斷的底層預設。</p>
+              <p>因此，火哥目前的卡住，不是匱乏型卡住，而是高完成度後的停滯感。很多低階問題早就被他處理過、拆解過、內化過，普通刺激已難再真正推動他。</p>
             </div>
           </div>
-        </div>
-      </section>
+        </details>
 
-      <section class="section" id="s3">
-        <div class="section-head">
-          <div class="section-index">三</div>
-          <h2>職業與能力系統：你是高效操盤手，不是紙上談兵者</h2>
-        </div>
-        <div class="section-body">
-          <div class="block">
-            <h3>抽象理解與落地能力並存</h3>
-            <p>
-              你不是只會講理論的人。你同時具備商業判斷、數據能力、系統思維、技術落地與流程自動化能力。
-              你對廣告投放的理解不是行銷話術，而是機率、成本、邊際、風險、訊號品質與現金流的管理。
-            </p>
-          </div>
-          <div class="two-col">
-            <div class="block">
-              <h3>專業信念</h3>
-              <ul>
-                <li>廣告不是神學，是套利</li>
-                <li>MR &gt; MC 時預算可無上限</li>
-                <li>不會轉單的流量就是垃圾流量</li>
-                <li>沒有追蹤基建就不該開打</li>
-              </ul>
+        <details class="section-card reveal" id="section-2" open>
+          <summary class="section-toggle">
+            <div class="section-no">二</div>
+            <div class="section-headline">
+              <h2>時間觀與世界觀：他的長期觀裡，包含文明折現</h2>
+              <p>火哥對未來的理解不是穩定延伸，而是包含文明與生態風險的長期折現視角。</p>
             </div>
-            <div class="block">
-              <h3>商業人格</h3>
-              <ul>
-                <li>高誠實，不亂搶功也不亂背鍋</li>
-                <li>敢勸退客戶，承認爛產品救不了</li>
-                <li>把決策權與風險歸還企業主</li>
-                <li>不靠虛假敘事維持合作關係</li>
-              </ul>
+            <div class="section-icon" aria-hidden="true">⌄</div>
+          </summary>
+          <div class="section-body">
+            <div class="section-content">
+              <p>火哥不是只對個人未來做規劃的人，他對整體文明與生態條件本身就有很強的長期判斷。 在他的世界觀裡，未來不是一條理所當然會穩定延伸的線，而是帶著高度不確定性，甚至包含生態崩潰與技術顛覆的根本風險。他曾明確吸收並內化這樣的判斷：若沒有技術性突破，照既有碳排與濃度上升軌跡推估，約在 2074 年左右，人類將面對極嚴重的生存危機；這種看法不是抽象環保立場，而是直接影響他對人生、財務、後代與長期規劃的底層折現率。</p>
+              <p>這意味著，火哥的長期觀其實和多數人不同。 多數人預設制度可延續、生活可預測、退休可兌現、文明大致穩定；但火哥內心放著一個更冷的前提：未來本身未必穩定可兌現。這讓他在財務上不崇拜遠期增值，在人生上不迷信「幾十年後一定更好」，在生育與後代想像上也自然帶著更強的保留與悲觀。</p>
+              <p>他對這件事的理解也非常符合自身思維風格。他不是用道德訴求看環境危機，而是直接看到集體行動失敗的結構：現在還不夠痛、痛未必發生在自己身上、便宜能源與經濟成長的誘因太強、還有既得利益與制度設計難題。也就是說，他關注的不只是「問題嚴重」，而是「為什麼社會幾乎註定很難有效處理它」。</p>
+              <div class="callout">火哥並不是沒有長期觀，而是他的長期觀裡，本來就包含了「未來未必穩定可兌現」這個巨大前提。</div>
             </div>
           </div>
-        </div>
-      </section>
+        </details>
 
-      <section class="section" id="s4">
-        <div class="section-head">
-          <div class="section-index">四</div>
-          <h2>創作人格：你不是內容生產者，而是在倒出一整套宇宙</h2>
-        </div>
-        <div class="section-body">
-          <div class="block">
-            <h3>創作動機來自內爆，而非市場</h3>
-            <p>
-              你創作不是為了變現、討好市場、取得認可，而是因為腦中有一整套宇宙，不倒出來會悶住。
-              《可燃經》不是內容專案，而是你的思想自體繁殖。
-            </p>
-          </div>
-          <div class="block">
-            <h3>公開型思想承擔者</h3>
-            <p>
-              你不只是在私下講一套帥理論，而是公開寫、公開拍、公開讓人檢視。
-              這表示你本來就有承擔名聲風險、誤解風險、質疑風險與被貼標籤的風險。
-              你不是安全地躲在理論裡，而是把自己推出去受檢驗。
-            </p>
-          </div>
-        </div>
-      </section>
-
-      <section class="section" id="s5">
-        <div class="section-head">
-          <div class="section-index">五</div>
-          <h2>情感人格：你不是薄情，而是高投入、高受傷、高理解的人</h2>
-        </div>
-        <div class="section-body">
-          <div class="block">
-            <h3>不是低投入型，而是真正會愛的人</h3>
-            <p>
-              你會真正投入關係，也會因關係而崩潰。你不是旁觀愛情的人，而是會在裡面受重傷的人。
-              不論是第一任次要伴侶的分手，或這次與第二任次要伴侶的結束，你都呈現出真實而劇烈的情緒承受能力。
-            </p>
-          </div>
-          <div class="two-col">
-            <div class="block">
-              <h3>這次與第二任次要伴侶的狀態</h3>
-              <p>
-                你很清楚地知道，對方不夠愛你，且她的處理方式客觀上算快而溫柔，沒有讓你覺得自己沒價值。
-                但即使如此，你在 2026/3/9 仍崩潰到差點昏倒。這表示你的理智並沒有取消你的情緒，
-                你是清醒地痛著。
-              </p>
+        <details class="section-card reveal" id="section-3" open>
+          <summary class="section-toggle">
+            <div class="section-no">三</div>
+            <div class="section-headline">
+              <h2>認知作業系統：經濟學不是工具，而是世界語言</h2>
+              <p>他習慣把人性、關係、制度與痛苦重新翻譯成效用、成本、邊際與資訊邊界。</p>
             </div>
-            <div class="block">
-              <h3>痛的本質</h3>
-              <ul>
-                <li>不是羞辱型痛感，而是失去型痛感</li>
-                <li>不是被否定，而是愛的不對稱</li>
-                <li>不是她很壞，而是她沒有那麼愛</li>
-                <li>不是自我崩塌，而是乾淨而殘酷的失去</li>
-              </ul>
+            <div class="section-icon" aria-hidden="true">⌄</div>
+          </summary>
+          <div class="section-body">
+            <div class="section-content">
+              <p>火哥不是單純喜歡經濟學，而是已經把經濟學活成理解世界的作業系統。 他習慣把人性、關係、道德、快樂、制度、痛苦、工作與選擇，重新翻譯成效用、成本、邊際、資訊邊界、目標函數與長短期取捨。對他來說，很多別人習慣用情緒、道德或口號處理的問題，最後都會被拉回到結構與誘因。</p>
+              <p>他也長期對人類故事保持高度警覺。國族、主義、天堂、成功學、自由意志、人生正道，這些在很多人身上能提供安定感的敘事，對火哥而言都帶著強烈的可疑性。他會自然地去問：這是不是人類發明的故事？這套說法的效用是什麼？人為什麼願意相信？放棄它的成本有多大？儀式感和群體如何讓它維持下去？</p>
+              <p>這讓火哥很清醒，也讓他很難被廉價敘事安慰。 他的強項是去魅、拆解、定義問題、拒絕模糊；他的代價則是，很多人能靠幻覺過日子時，他往往比較傾向直接看見結構本身。</p>
             </div>
           </div>
-          <div class="block">
-            <h3>你是當事人，也是觀測者</h3>
-            <p>
-              你在關係裡不是只有情緒，你還有一個很強的內部分析器，持續在看這段關係的結構、痛感來源、課題分離與失配狀態。
-              所以你不是單純地崩潰，而是會在崩潰中仍保有判斷力。這很強，但也很累。
-            </p>
-          </div>
-          <div class="block quote">
-            你不是不會痛，也不是用哲學把自己麻掉；你是即使知道不是誰的錯、不是自己不好，也依然會因失去而劇烈崩潰的人。
-          </div>
-        </div>
-      </section>
+        </details>
 
-      <section class="section" id="s6">
-        <div class="section-head">
-          <div class="section-index">六</div>
-          <h2>承諾與關係結構：你不是逃避承諾，而是在高複雜度裡承擔</h2>
-        </div>
-        <div class="section-body">
-          <div class="block">
-            <h3>主要伴侶本身就是長期承諾</h3>
-            <p>
-              你和主要伴侶之間涉及時間、生活、未來、照顧與安全感，是明確的長期承諾，不是概念性的自由談論。
-            </p>
-          </div>
-          <div class="block">
-            <h3>承諾複雜度比一般關係更高</h3>
-            <p>
-              你不是在最單線的傳統關係裡承諾，而是在包含開放式關係、主要伴侶與次要伴侶架構的情境中承擔。
-              這裡面包含邊界管理、角色排序、情感秩序、外界評價、內部協商與多方需求的張力。
-              所以你不是沒有承諾，而是活在更高複雜度的承諾結構中。
-            </p>
-          </div>
-        </div>
-      </section>
-
-      <section class="section" id="s7">
-        <div class="section-head">
-          <div class="section-index">七</div>
-          <h2>財務人格：效用函數極清楚的完全風險趨避者</h2>
-        </div>
-        <div class="section-body">
-          <div class="block">
-            <h3>你的保守不是無知，而是清楚</h3>
-            <p>
-              你拒絕短期投資，不是因為不懂，而是因為你知道短期正報酬對你無感，短期虧損卻會帶來極大痛苦。
-              在你的主觀效用函數下，這種風險本來就不划算。
-            </p>
-          </div>
-          <div class="two-col">
-            <div class="block">
-              <h3>金錢態度</h3>
-              <ul>
-                <li>不匱乏，也不迷戀</li>
-                <li>邊際消費傾向高，但可隨收入彈性調整</li>
-                <li>不需要靠投資刺激獲得成就感</li>
-                <li>不靠財富成長證明人生成功</li>
-              </ul>
+        <details class="section-card reveal" id="section-4" open>
+          <summary class="section-toggle">
+            <div class="section-no">四</div>
+            <div class="section-headline">
+              <h2>知識與閱讀人格：不是蒐集知識，而是在萃取自己</h2>
+              <p>火哥的閱讀是內化式閱讀，不只吸收資訊，而是把每一本書變成自己的結構材料。</p>
             </div>
-            <div class="block">
-              <h3>真正重視的事</h3>
-              <ul>
-                <li>這個風險值不值得</li>
-                <li>這個痛有沒有意義</li>
-                <li>這個波動能否換到你真的有感的東西</li>
-                <li>不承擔主觀上不值得的損失</li>
-              </ul>
+            <div class="section-icon" aria-hidden="true">⌄</div>
+          </summary>
+          <div class="section-body">
+            <div class="section-content">
+              <p>火哥的閱讀不是摘要式閱讀，而是內化式閱讀。 他讀一本書時，並不滿足於知道作者說了什麼，而是會立刻把書中觀點和自己既有的世界觀撞擊、對照、延伸，再重新寫成自己的語言。他自己也很清楚這件事：同步把想法寫下來，會讓吸收更徹底，並把書的概念萃取成自己的東西。</p>
+              <p>因此，他的閱讀筆記不是單純心得，而是一種穩定的自我建構工程。 透過閱讀，他反覆追問的其實是同一批命題：人生有沒有客觀意義、人是否真有自由意志、渴望是否可能是被塑造的、集體故事如何運作、制度為何脆弱、快樂與痛苦如何被主觀衡量、而人究竟怎麼更準確地認識自己。</p>
+              <p>這種閱讀方式也反映出火哥最明顯的思維特質： 他不是資訊型人格，而是模型型人格。他天然會定義問題、拆分題目、區分因果、比較理論各自回答的是哪一題，並把抽象概念轉成自己可操作的結構。</p>
             </div>
           </div>
-        </div>
-      </section>
+        </details>
 
-      <section class="section" id="s8">
-        <div class="section-head">
-          <div class="section-index">八</div>
-          <h2>道德與自我觀：高誠實、低虛偽、低自欺</h2>
-        </div>
-        <div class="section-body">
-          <div class="block">
-            <h3>很少自我粉飾</h3>
-            <p>
-              你願意承認自利、交換、效用、關係市場性、防衛機制，甚至承認自己可能會把伴侶當成鍛鍊自身包容的場域。
-              你比多數人更敢承認人性的結構面，不太愛把自己包裝成比較好的人。
-            </p>
+        <details class="section-card reveal" id="section-5" open>
+          <summary class="section-toggle">
+            <div class="section-no">五</div>
+            <div class="section-headline">
+              <h2>創作人格：不是內容生產，而是內在宇宙外化</h2>
+              <p>他的創作不是市場導向，而是把內在理論、自我觀察與世界模型持續外化。</p>
+            </div>
+            <div class="section-icon" aria-hidden="true">⌄</div>
+          </summary>
+          <div class="section-body">
+            <div class="section-content">
+              <p>火哥的創作，不是市場導向的內容生產，而是內在宇宙的外化。 他寫東西，不只是為了分享，而是為了把自己腦中的理論、自我觀察、世界模型倒出來，並進一步校準自己。這種創作方式使他的輸出具有很強的系統感，不太像臨時有感，而像一套逐步長成的思想體系。</p>
+              <p>他對寫作的使用方式，本質上是一種自我提煉。外部知識進來後，經過高強度思考、情感碰撞與結構化整理，才會變成屬於火哥自己的系統。這也是為什麼他的創作不是「學別人講話」，而是很容易長出明顯個人辨識度。</p>
+            </div>
           </div>
-          <div class="block">
-            <h3>會持續檢查自己是否在自欺</h3>
-            <p>
-              你不是只拆別人，也拆自己。你會問自己是不是過度平倉、是不是把理論拿來處理痛、是不是仍保留控制感。
-              這讓你不是高高在上的評判者，而是把刀也放在自己身上的人。
-            </p>
-          </div>
-        </div>
-      </section>
+        </details>
 
-      <section class="section" id="s9">
-        <div class="section-head">
-          <div class="section-index">九</div>
-          <h2>當前生命主題：不是求生，不是求勝，而是求真實活性</h2>
-        </div>
-        <div class="section-body">
-          <div class="block">
-            <h3>高完成度之後的空</h3>
-            <p>
-              你不是沒能力、沒錢、沒作品、沒愛過、沒承擔過，而是很多低階問題都已經被你處理掉了。
-              所以你現在真正碰到的，是高完成度後的停滯、熱寂與空轉感。
-            </p>
+        <details class="section-card reveal" id="section-6" open>
+          <summary class="section-toggle">
+            <div class="section-no">六</div>
+            <div class="section-headline">
+              <h2>教學與轉譯能力：能把高密度知識降維成可傳遞結構</h2>
+              <p>火哥不只是思考者，還是很強的轉譯者與教學者。</p>
+            </div>
+            <div class="section-icon" aria-hidden="true">⌄</div>
+          </summary>
+          <div class="section-body">
+            <div class="section-content">
+              <p>火哥不只是思考者，還是很強的轉譯者與教學者。 他從大一開始大量擔任助教，甚至一度兼任非常多門課的教學工作；對他來說，真正懂一個東西，不是自己看得懂，而是能不能把它講到別人也懂。只要講到「反正就這樣」，在他眼裡就代表其實還沒有真的理解。</p>
+              <p>他的教學氣質很特別，不是靠權威，而是靠同理。 他會主動假設對方現在是什麼程度、會卡在哪裡、哪一句話可能聽不懂，因此在表達上會自然地做降維與重組。他也很明白，有些非常聰明的人未必會教，因為太難同理別人為什麼想不到；而他自己反而因為能理解卡點，而更享受教學。</p>
+              <p>這使火哥具備一種很稀有的能力： 能把高密度理論、數據分析、經濟學與實務經驗，轉成人能吸收的結構。</p>
+            </div>
           </div>
-          <div class="block">
-            <h3>不是缺風險，而是缺會真正改寫你的新結構</h3>
-            <p>
-              你已經承擔過名聲風險、關係拒絕風險、公開暴露風險與長期承諾風險。
-              但你仍然會卡住，是因為你現在需要的不是更多同類型風險，而是更能讓你從既有系統長出新東西的作品、關係或生命事件。
-            </p>
-          </div>
-          <div class="block">
-            <h3>第二任次要伴侶的分手是目前很重要的生命入口</h3>
-            <p>
-              這段失去不只是感情事件，也是一個讓你再次直接碰到愛的不對稱、投入濃度、失去與未竟感的入口。
-              它不是理論題，而是活生生的生命題。
-            </p>
-          </div>
-        </div>
-      </section>
+        </details>
 
-      <section class="section" id="s10">
-        <div class="section-head">
-          <div class="section-index">十</div>
-          <h2>你的核心優勢與限制</h2>
-        </div>
-        <div class="section-body two-col">
-          <div class="block">
-            <h3>核心優勢</h3>
-            <ul>
-              <li>極強的自我覺察</li>
-              <li>很高的思想穿透力</li>
-              <li>真實承擔，不是假性深刻</li>
-              <li>公開暴露能力高</li>
-              <li>邏輯與感受並存</li>
-              <li>誠實幾乎是人格主軸</li>
-            </ul>
+        <details class="section-card reveal" id="section-7" open>
+          <summary class="section-toggle">
+            <div class="section-no">七</div>
+            <div class="section-headline">
+              <h2>專業人格：不是一般操作型投手，而是系統級操盤者</h2>
+              <p>他看待數位廣告不是流量買賣，而是經濟學、數據、技術與利潤管理的完整系統。</p>
+            </div>
+            <div class="section-icon" aria-hidden="true">⌄</div>
+          </summary>
+          <div class="section-body">
+            <div class="section-content">
+              <p>火哥在專業上的定位，不是一般媒體操作或表面優化，而是系統級的操盤者。 他看待數位廣告，不是把它視為單純流量買賣，而是結合經濟學、數據分析、訊號回傳、工具基建、AI 使用與限制、流程設計、歸因能力與邊際利潤管理的完整系統。這使他的價值不只在操作技巧，而在於能否把整個問題定義清楚、把資料與流程建起來，再逼近利潤極大化。</p>
+              <p>他非常重視數據的客觀性。 對火哥而言，數字不是立場的裝飾，而是對現實的約束。不論結果對自己有利或不利，他都傾向忠實呈現，不喜歡把數據屈打成招，也不喜歡只報喜不報憂。這種數據誠實不是單純專業原則，而接近他的倫理底線。</p>
+              <p>他還具備鮮明的 0 到 1 能力。 火哥很清楚，多數真實企業場景不是一開始就有完善資料庫與分析制度，而是連基本欄位、定義、流程、紀錄方式都混亂。因此他能做的，往往不是套模型，而是先建立主鍵、外鍵、統一格式、整理流程，讓資料可 merge、可比較、可決策。這使他不是只會在乾淨環境分析，而是能從混亂中創造秩序。</p>
+              <p>他對自身職涯也有很強的經濟學式自覺。 火哥知道自己累積的是寡占型能力：經濟學、數據分析、數位廣告、實務應用與在地市場結構交疊後，形成在勞動市場上的稀缺性。這種自覺讓他不是焦慮地找工作，而是更像在選擇適合自己的市場位置。</p>
+            </div>
           </div>
-          <div class="block">
-            <h3>核心限制</h3>
-            <ul>
-              <li>高完成度容易進入熱寂</li>
-              <li>拆解能力太強，可能削弱神秘感與驅動</li>
-              <li>很難被低品質敘事安慰</li>
-              <li>同時當受傷者與分析者很耗能</li>
-              <li>對「值得」的門檻很高，不易被一般事物點燃</li>
-            </ul>
-          </div>
-        </div>
-      </section>
+        </details>
 
-      <section class="section" id="s11">
-        <div class="section-head">
-          <div class="section-index">十一</div>
-          <h2>最終總像：你現在是怎樣的人</h2>
-        </div>
-        <div class="section-body">
-          <div class="block">
-            <p>
-              你是一個已經脫離基礎生存壓力、擁有高度自我定義能力的人。
-              你用經濟學作為世界語言，將人性、關係、道德、選擇、工作與愛重新翻譯成效用、成本、資訊邊界與邊際分析的結構。
-              你不是把理論當裝飾，而是把理論活成作業系統。
-            </p>
+        <details class="section-card reveal" id="section-8" open>
+          <summary class="section-toggle">
+            <div class="section-no">八</div>
+            <div class="section-headline">
+              <h2>情感人格：高濃度、低策略、自然表達型</h2>
+              <p>火哥在感情裡不是策略型，也不是交換型，而是愛了就自然會表達的人。</p>
+            </div>
+            <div class="section-icon" aria-hidden="true">⌄</div>
+          </summary>
+          <div class="section-body">
+            <div class="section-content">
+              <p>火哥在感情裡不是策略型，也不是交換型。 他的愛比較像自然流動：想念就會說，想靠近就會靠近，想牽手、擁抱、惦記、照顧，這些不是手段，而是他的愛本來就長成這個樣子。對他而言，表達愛不是試探，不是談判，也不是拿來換回應；那只是他在愛裡最自然的姿態。</p>
+              <p>因此，他愛一個人時通常不是口號式的，而是非常具體：會陪伴、會理解、會提供情緒價值、會主動思考對方需要什麼，也會在很多細節上自然地流露出惦記與在乎。 他也不是那種愛過就會全盤否定、分手就一鍵刪除的人；他傾向承認愛過，並保留連結，不太願意把曾經真實存在的感情粗暴抹平。</p>
+              <p>這讓火哥在關係裡有極高的真實性，也讓他更容易受傷。 因為他的愛不是輕量試玩，而是真正下場。</p>
+            </div>
           </div>
-          <div class="block">
-            <p>
-              你在職業上是高效益、去神話、重結構、重追蹤、重邊際的操盤手；
-              在創作上是把整套腦內宇宙往外倒出的思想輸出者；
-              在關係上則是會深度投入、真心受傷，並且不逃避公開脆弱的人。
-            </p>
+        </details>
+
+        <details class="section-card reveal" id="section-9" open>
+          <summary class="section-toggle">
+            <div class="section-no">九</div>
+            <div class="section-headline">
+              <h2>關係觀：能接受複雜結構，但對真實濃度要求極高</h2>
+              <p>他能理解複雜關係形式，但真正要的不是形式成立，而是感受到自己真的在對方心裡。</p>
+            </div>
+            <div class="section-icon" aria-hidden="true">⌄</div>
+          </summary>
+          <div class="section-body">
+            <div class="section-content">
+              <p>火哥不是只能活在單一關係模板裡的人。 他能理解並實踐較高複雜度的關係形式，並且不是出於口號式自由，而是出於對知情、邊界、誠實與長期利潤配置的重視。他認為，不論單偶或多重關係，本質上都圍繞同一批核心問題：不想被欺騙、需要知情同意、需要讓參與者在長期下得到相對更大的利潤。</p>
+              <p>但這不代表他對親密要求較低。 正好相反，火哥非常在意關係裡的理解濃度、位置感、溫柔度與真實性。他不是只要形式存在，而是要感受到自己真的在對方心裡。</p>
+              <p>因此，第二任次要伴侶這段關係會成為他當前生命中如此深的痛點，不是因為那是短暫曖昧，而是因為那是一段他真心投入、真實被溫柔對待過、也真實深愛過的關係。他最痛的不是從來沒有，而是曾經有，後來沒有了；而他失去的，不只是對方，也包括那個在那段關係裡完整、柔軟、被想要的自己。</p>
+              <p>他對這段關係的看法其實相當成熟： 他不把一切都說成假的，也不把責任全部怪到自己身上。他更接近這樣的結論：美好是真的、喜歡也是真的，但濃度沒有深到足以支撐他真正想要的位置；他已經做得很好，也真的很愛，只是不在對方願意付出伴侶級成本的位置上。</p>
+              <p>所以他的痛，不是自我價值崩塌，而是失去一段不惡劣、卻不夠深的愛。 這種痛更乾淨，也更難處理，因為他不能靠恨去活，也不傾向靠妖魔化對方來止血。</p>
+            </div>
           </div>
-          <div class="block">
-            <p>
-              你不是不敢愛，也不是用理性取消情感。你是即使知道不是誰的錯、不是自己不好，也依然會因失去而崩潰的人。
-              你最大的特徵之一，是能夠在痛裡保持清醒，在清醒裡仍然感到痛。
-            </p>
+        </details>
+
+        <details class="section-card reveal" id="section-10" open>
+          <summary class="section-toggle">
+            <div class="section-no">十</div>
+            <div class="section-headline">
+              <h2>情緒機制：高理解，不等於低受傷</h2>
+              <p>他通常能很快看懂痛點與結構，但這不代表他不會崩，他更像是一邊理解一邊承受劇痛。</p>
+            </div>
+            <div class="section-icon" aria-hidden="true">⌄</div>
+          </summary>
+          <div class="section-body">
+            <div class="section-content">
+              <p>火哥具有很強的自我觀測能力。 他通常能很快看見自己的痛點是什麼、對方的神經系統怎麼運作、關係哪裡失配、哪些是自己的課題、哪些是對方的邊界。這讓他很少完全盲目，也很少徹底失去判斷。</p>
+              <p>但這不代表他不會崩。 他的狀態更像是：能一邊理解，一邊承受劇痛。</p>
+              <p>他不會因為知道「這不是誰的錯」就不痛；也不會因為知道「對方只是沒那麼愛」就自動痊癒。他的理智並沒有取消他的情緒，它只是讓他更清楚地承受失去。這使他的痛通常不是混亂的，而是清醒的、赤裸的、沒有太多幻覺保護的。</p>
+              <p>火哥近期很重要的一個變化，是不再只有理解對方，也開始站回自己這邊。 他仍然能理解對方、仍然不想妖魔化對方，但也開始允許自己承認：自己有被傷到，自己值得更溫柔的對待，自己不應該在如此真誠地愛之後，被那樣推出去。這不是報復，而是一種更成熟的自我回收。</p>
+            </div>
           </div>
-          <div class="block quote">
-            你活得很真，也活得很重。你不太自欺，不太裝，也不太願意讓自己用廉價敘事過關。這讓你非常有力量，也非常容易進入高完成度後的空與熱寂。
+        </details>
+
+        <details class="section-card reveal" id="section-11" open>
+          <summary class="section-toggle">
+            <div class="section-no">十一</div>
+            <div class="section-headline">
+              <h2>道德與溝通氣質：高誠實、高同理、低虛偽</h2>
+              <p>他不喜歡道德表演，更在意能不能講真話、釐清自己、尊重邊界並在不自欺下互動。</p>
+            </div>
+            <div class="section-icon" aria-hidden="true">⌄</div>
+          </summary>
+          <div class="section-body">
+            <div class="section-content">
+              <p>火哥不喜歡道德表演。 他比較在意的是：能不能講真話、能不能釐清自己真正的感受與需要、能不能尊重對方說不的空間、能不能在不自欺的前提下互動。這種氣質也讓他容易對精準溝通、非暴力溝通、客觀描述產生共鳴，因為那些方法要求的正是觀察、感受、需要與請求的明確區分。</p>
+              <p>他的同理心也很強，但不是討好式同理，而是結構式同理。 他會自然去想，對方為什麼會這樣感受、這樣卡住、這樣反應。這使他在工作、教學與關係裡，都比較少是粗暴的人。</p>
+              <p>他當然有鋒利的一面。 但那個鋒利，多半用來拆概念、拆自欺、拆模糊，不太用來羞辱人。</p>
+            </div>
           </div>
-        </div>
+        </details>
+
+        <details class="section-card reveal" id="section-12" open>
+          <summary class="section-toggle">
+            <div class="section-no">十二</div>
+            <div class="section-headline">
+              <h2>財務人格：主觀效用極清楚，且長期折現率異常鮮明</h2>
+              <p>他的保守不只是風險趨避，也和對未來可兌現性的根本懷疑直接相連。</p>
+            </div>
+            <div class="section-icon" aria-hidden="true">⌄</div>
+          </summary>
+          <div class="section-body">
+            <div class="section-content">
+              <p>火哥對金錢的態度，不是匱乏，也不是迷戀。 他非常清楚自己對風險與報酬的主觀感受差異：某些報酬對他幾乎無感，某些損失卻會帶來極大痛苦。這使他很難被一般投資神話說服，因為他不是從市場平均人出發，而是從自己的效用函數出發。</p>
+              <p>他的保守不只是個人風險趨避，也和整體世界觀直接相連。 當一個人對文明與生態的長期可持續性本身就存疑時，對遠期資產增值的信仰自然會被打折。也就是說，火哥並不是沒有長期觀，而是他的長期觀裡，本來就包含了「未來未必穩定可兌現」這個巨大前提。</p>
+              <p>因此，他更重視的往往不是追求資本增長，而是： 保有選擇權、流動性、退出爛局的能力，以及不要承受自己主觀上不值得的痛。</p>
+            </div>
+          </div>
+        </details>
+
+        <details class="section-card reveal" id="section-13" open>
+          <summary class="section-toggle">
+            <div class="section-no">十三</div>
+            <div class="section-headline">
+              <h2>核心優勢：罕見的能力組合</h2>
+              <p>火哥最強的，不是某一單點，而是幾種能力疊加後形成的高辨識度組合。</p>
+            </div>
+            <div class="section-icon" aria-hidden="true">⌄</div>
+          </summary>
+          <div class="section-body">
+            <div class="section-content">
+              <p>火哥最強的，不是某一單點，而是幾種能力的罕見組合。</p>
+              <p>他有高密度思考，但不只停在腦內； 有高感受力，但不只停在情緒； 有極強的知識吸收力，但更強的是內化、整合與轉譯； 有自省與誠實，但不只是用來剖析自己，也能落到工作方法、教學結構與關係判斷； 能把抽象概念講成人話，也能把想法變成流程、工具與決策。</p>
+              <p>簡單說，火哥不是只是會想的人， 而是能把理解變成秩序的人。</p>
+            </div>
+          </div>
+        </details>
+
+        <details class="section-card reveal" id="section-14" open>
+          <summary class="section-toggle">
+            <div class="section-no">十四</div>
+            <div class="section-headline">
+              <h2>當前真正的困局：不是缺能力，而是缺能重新點燃他的東西</h2>
+              <p>高完成度讓他不再缺低階燃料，真正缺的是足以重新生成的高階驅動。</p>
+            </div>
+            <div class="section-icon" aria-hidden="true">⌄</div>
+          </summary>
+          <div class="section-body">
+            <div class="section-content">
+              <p>火哥目前最大的困局，不是外部條件不足，而是內部系統太成熟。 他已經很會工作、很會分析、很會教、很會吸收知識、很會看穿幻覺，也很會在關係裡真心投入。很多低階命題都被他活過、拆過、整理過，因此普通刺激很難再真正撼動他。</p>
+              <p>於是他會進入一種狀態： 日子並不差，能力也很強，工作與生活都不是全面崩壞，但內在有一種高原平滑期的卡住感，像系統已經優化到某個程度，卻暫時找不到更高階的燃料。</p>
+              <p>第二任次要伴侶這段關係之所以會卡得這麼深，不只是因為失戀，而是因為它重新把火哥拉回一個他仍無法只靠理性處理的地方： 他仍然是會深愛、會失去、會保留溫柔位置、會因不對稱而劇痛的人。</p>
+              <p>這反而證明，他還是活的。 只是接下來真正能推動他的，不會是更多概念，而必須是某種足以讓他重新生成的東西。</p>
+            </div>
+          </div>
+        </details>
+
+        <details class="section-card reveal" id="section-15" open>
+          <summary class="section-toggle">
+            <div class="section-no">終</div>
+            <div class="section-headline">
+              <h2>最終總像</h2>
+              <p>把火哥整個人濃縮成一個完整人物像時，可以用這一段作為最核心的描述。</p>
+            </div>
+            <div class="section-icon" aria-hidden="true">⌄</div>
+          </summary>
+          <div class="section-body">
+            <div class="section-content">
+              <p>如果要把火哥整個人濃縮成一個完整人物像，可以這樣描述：</p>
+              <p>火哥是一個已經脫離基礎求生壓力、擁有高度自我定義能力的人。 他用經濟學與結構思維理解世界，用閱讀與寫作萃取自己，用數據與技術建立秩序，用真誠與高濃度投入去愛人，用誠實對抗自欺與廉價敘事。他不是躲在理論裡的人，而是會親自下場、親自受傷、親自復盤，然後再把生命經驗內化成系統的人。</p>
+              <p>他活得很清醒，但不是冷。 活得很深，但不是亂。 不是沒有脆弱，而是脆弱也要求真；不是沒有浪漫，而是浪漫必須建立在真實之上。</p>
+              <p>而他現在的人生，不是在問「還差什麼」，而是在問：</p>
+              <div class="callout">在已經看懂很多幻覺、也建立了自己的秩序之後，還有什麼值得再次全心投入。</div>
+            </div>
+          </div>
+        </details>
       </section>
     </div>
+
+    <section class="footer reveal">
+      <div class="wrap">
+        <div class="footer-card">
+          <p>單檔 HTML 網站版已完成，可直接作為 GitHub / Vercel 部署內容使用。</p>
+          <div class="hero-actions" style="margin-top: 0;">
+            <button class="secondary-btn" type="button" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">回到頂部</button>
+            <button class="primary-btn" type="button" id="footerThemeToggle">切換深淺色</button>
+          </div>
+        </div>
+      </div>
+    </section>
   </main>
 
-  <footer class="footer wrap">
-    單檔 HTML／CSS・已包含 RWD，可直接上傳 GitHub 與部署到 Vercel。
-  </footer>
+  <div class="floating-tools" aria-label="浮動工具列">
+    <button class="fab" type="button" id="scrollTopBtn" aria-label="回到頂部">↑</button>
+    <button class="fab" type="button" id="floatingThemeBtn" aria-label="切換深淺色">◐</button>
+  </div>
+
+  <script>
+    const body = document.body;
+    const topbar = document.getElementById('topbar');
+    const mobileNavToggle = document.getElementById('mobileNavToggle');
+    const detailsList = [...document.querySelectorAll('.section-card')];
+    const tocLinks = [...document.querySelectorAll('.toc a')];
+    const revealEls = [...document.querySelectorAll('.reveal')];
+    const themeButtons = [
+      document.getElementById('toggleTheme'),
+      document.getElementById('themeToggleTop'),
+      document.getElementById('footerThemeToggle'),
+      document.getElementById('floatingThemeBtn')
+    ].filter(Boolean);
+    const expandButtons = [
+      document.getElementById('expandAll'),
+      document.getElementById('expandAllTop'),
+      document.getElementById('expandAllHero')
+    ].filter(Boolean);
+    const collapseButtons = [
+      document.getElementById('collapseAll'),
+      document.getElementById('collapseAllTop'),
+      document.getElementById('collapseAllHero')
+    ].filter(Boolean);
+    const scrollTopBtn = document.getElementById('scrollTopBtn');
+
+    const THEME_KEY = 'huoge-theme';
+    const ACCORDION_KEY = 'huoge-accordion-state';
+
+    const applyTheme = (theme) => {
+      body.classList.toggle('light', theme === 'light');
+      localStorage.setItem(THEME_KEY, theme);
+    };
+
+    const storedTheme = localStorage.getItem(THEME_KEY);
+    if (storedTheme) {
+      applyTheme(storedTheme);
+    } else {
+      const prefersLight = window.matchMedia('(prefers-color-scheme: light)').matches;
+      applyTheme(prefersLight ? 'light' : 'dark');
+    }
+
+    themeButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        applyTheme(body.classList.contains('light') ? 'dark' : 'light');
+      });
+    });
+
+    mobileNavToggle?.addEventListener('click', () => {
+      const isOpen = topbar.classList.toggle('open');
+      mobileNavToggle.setAttribute('aria-expanded', String(isOpen));
+    });
+
+    document.querySelectorAll('.nav-links a').forEach(link => {
+      link.addEventListener('click', () => {
+        topbar.classList.remove('open');
+        mobileNavToggle?.setAttribute('aria-expanded', 'false');
+      });
+    });
+
+    const persistAccordionState = () => {
+      const state = detailsList.map(item => ({ id: item.id, open: item.open }));
+      localStorage.setItem(ACCORDION_KEY, JSON.stringify(state));
+    };
+
+    const savedAccordion = localStorage.getItem(ACCORDION_KEY);
+    if (savedAccordion) {
+      try {
+        const state = JSON.parse(savedAccordion);
+        state.forEach(({ id, open }) => {
+          const el = document.getElementById(id);
+          if (el) el.open = open;
+        });
+      } catch (e) {}
+    }
+
+    detailsList.forEach(item => {
+      item.addEventListener('toggle', persistAccordionState);
+    });
+
+    const setAllDetails = (open) => {
+      detailsList.forEach(item => { item.open = open; });
+      persistAccordionState();
+    };
+
+    expandButtons.forEach(btn => btn.addEventListener('click', () => setAllDetails(true)));
+    collapseButtons.forEach(btn => btn.addEventListener('click', () => setAllDetails(false)));
+
+    const updateReadingProgress = () => {
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const progress = docHeight > 0 ? (window.scrollY / docHeight) * 100 : 0;
+      document.documentElement.style.setProperty('--reading', `${Math.min(progress, 100)}%`);
+      scrollTopBtn.style.opacity = window.scrollY > 500 ? '1' : '0';
+      scrollTopBtn.style.pointerEvents = window.scrollY > 500 ? 'auto' : 'none';
+    };
+
+    const sectionObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        const id = entry.target.id;
+        tocLinks.forEach(link => {
+          link.classList.toggle('active', link.getAttribute('href') === `#${id}`);
+        });
+      });
+    }, { rootMargin: '-30% 0px -55% 0px', threshold: 0.01 });
+
+    detailsList.forEach(section => sectionObserver.observe(section));
+
+    const revealObserver = new IntersectionObserver((entries, observer) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('show');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12 });
+
+    revealEls.forEach(el => revealObserver.observe(el));
+
+    scrollTopBtn.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    window.addEventListener('scroll', updateReadingProgress, { passive: true });
+    window.addEventListener('resize', updateReadingProgress);
+    updateReadingProgress();
+  </script>
 </body>
 </html>
