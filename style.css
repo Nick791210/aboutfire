@@ -51,6 +51,7 @@ h1, h2, h3, h4 {
     font-weight: 600;
     color: var(--text-strong);
     letter-spacing: 0.06em; /* 標題稍微拉得更開 */
+    text-wrap: balance; /* 避免單字掉到下一行 */
 }
 
 /* 針對閱讀區塊的優化 */
@@ -60,6 +61,7 @@ h1, h2, h3, h4 {
     max-width: 38em; /* 限制單行字數約 38-40 個中文字，最適合排版閱讀 */
     margin-bottom: 1.5em;
     font-weight: 300;
+    text-wrap: pretty; /* 盡量不讓最後一行只有一兩個字 (孤字控制) */
 }
 .reading-text p:last-child {
     margin-bottom: 0;
@@ -583,6 +585,11 @@ footer {
     background: #000;
 }
 
+/* 手機版專用語義斷行 */
+.mobile-br {
+    display: none;
+}
+
 /* Responsive */
 @media (max-width: 900px) {
     .bento-sys-2, .bento-sys-3 { grid-column: span 12; }
@@ -602,10 +609,11 @@ footer {
 }
 @media (max-width: 600px) {
     .nav-links { display: none; }
-    .hero h1 { font-size: 2.5rem; }
+    .hero h1 { font-size: 2.5rem; text-wrap: balance; }
     .hero-card { padding: 32px 24px; margin-top: 32px; }
-    .reading-text p { font-size: 1.05rem; }
+    .reading-text p { font-size: 1.05rem; letter-spacing: 0.04em; text-align: justify; }
     .data-panel, .bento-card { padding: 32px 24px; }
     .punchline { font-size: 1.25rem !important; padding: 24px 32px !important; }
     .final-q { font-size: 2rem !important; margin-top: 48px !important; }
+    .mobile-br { display: block; } /* 手機版才強制斷行 */
 }
